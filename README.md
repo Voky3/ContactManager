@@ -1,33 +1,30 @@
-# ContactManager – ASP.NET Core MVC CRUD App
+# ContactManager - ASP.NET Core MVC CRUD App
 
-This project is a simple contact management web application built for technical interview.
-It demonstrates layered ASP.NET Core MVC architecture with manual ADO.NET database access and a minimal frontend using plain JavaScript, HTML, and CSS.
+Small app using **ASP.NET Core MVC**, **SQLite**, and **vanilla HTML/CSS/JS**, built for technical interview.
+Demonstrates layered ASP.NET Core MVC architecture with manual ADO.NET database access and a minimal frontend using plain JavaScript, HTML, and CSS.
 
 ---
 
-## ? Purpose
+## Functionality
 
-App supports full CRUD operations on a `Contact` entity, including:
+Supports CRUD operations on a `Contact` entity, including:
 
 - Creating a new contact
-- Viewing the contact list (filtering/sorting to be added)
+- Viewing the contact list (filtering/sorting included)
 - Editing existing contacts
 - Deleting contacts
 - Returning validation errors on invalid input
 
 ---
 
-## ?? Architecture Overview
+## Architecture Overview
 
-This is a **classic web app backend** using **ASP.NET Core MVC**:
 - **Controllers** handle incoming HTTP requests (used as API endpoints)
 - **Services** contain application logic
 - **Repositories** handle all database access
-- **DTOs** separate transport-layer models from domain models
+- **DTOs** transport-layer separating models from domain models
+-  **Models** represent core domain objects like `Contact`
 
-No Razor or frontend frameworks are used — the HTML/JS frontend is static and talks to the backend using **AJAX** requests.
+No frontend frameworks are used. The HTML/JS frontend is static and talks to the backend using **AJAX** requests.
 
----
-
-## ?? Folder Structure
 
