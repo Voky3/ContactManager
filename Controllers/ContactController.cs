@@ -1,14 +1,95 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ContactManager.DTOs;
+using ContactManager.Services;
 
 namespace ContactManager.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class ContactController : Controller
     {
-        public IActionResult Index()
+        private readonly IContactService _service;
+
+        public ContactController(IContactService service) => _service = service;
+
+        // ------------------ LIST ALL ------------------
+
+        public async Task<IActionResult> Index(string? filter, string? sortBy)
         {
-            return View();
+            var contacts = await _service.GetAllAsync(filter, sortBy);
+            return View(contacts); // returns Views/Contact/Index.cshtml
         }
+
+        // ------------------ DETAILS ------------------
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var contact = await _service.GetByIdAsync(id);
+            if (contact == null) return NotFound();
+
+            return View(contact); // Views/Contact/Details.cshtml
+        }
+
+        // ------------------ CREATE ------------------
+
+        public IActionResult Create()
+        {
+            return View(); // shows empty form
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ContactRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View(request); // return form with validation errors
+
+            await _service.CreateAsync(request);
+            return RedirectToAction("Index");
+        }
+
+        // ------------------ EDIT ------------------
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var contact = await _service.GetByIdAsync(id);
+            if (contact == null) return NotFound();
+
+            var request = MapToRequest(contact);
+            return View(request); // pass filled form
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, ContactRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View(request); // return form with errors
+
+            var success = await _service.UpdateAsync(id, request);
+            return success ? RedirectToAction("Index") : NotFound();
+        }
+
+        // ------------------ DELETE ------------------
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var contact = await _service.GetByIdAsync(id);
+            if (contact == null) return NotFound();
+
+            return View(contact); // Confirm delete form
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> ConfirmDelete(int id)
+        {
+            await _service.DeleteAsync(id);
+            return RedirectToAction("Index");
+        }
+        private ContactRequest MapToRequest(ContactResponse response) => new()
+        {
+            FirstName = response.FirstName,
+            LastName = response.LastName,
+            Phone = response.Phone,
+            Email = response.Email,
+            City = response.City
+        };
+
     }
 }

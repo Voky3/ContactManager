@@ -1,34 +1,47 @@
+using ContactManager.Services;
+using ContactManager.Data;
+
 namespace ContactManager
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            SQLitePCL.Batteries.Init(); // required for SQLite
+
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
+
+            builder.Services.AddScoped<IContactRepository, ContactRepository>();
+            builder.Services.AddScoped<IContactService, ContactService>();
+
+            // Enable Swagger UI
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            // Swagger for local testing
+            if (app.Environment.IsDevelopment())
             {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            // seed testing data if DB is empty
+            using (var scope = app.Services.CreateScope())
+            {
+                var seeder = new TestingDataSeeder(
+                    scope.ServiceProvider.GetRequiredService<IConfiguration>());
+
+                await seeder.EnsureDatabaseSeededAsync(); 
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
             app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.MapControllers();
 
             app.Run();
         }
