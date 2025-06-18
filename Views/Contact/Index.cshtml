@@ -1,0 +1,51 @@
+﻿@using ContactManager.DTOs
+@model IEnumerable<ContactResponse>
+
+@{
+    ViewData["Title"] = "List kontaktů";
+}
+
+<h2>Kontakty</h2>
+
+<form method="get" class="filter-form">
+    <input type="text" name="filter" placeholder="Hledat..." value="@Context.Request.Query["filter"]" />
+    <select name="sortBy">
+        <option value="">Seřadit podle</option>
+        <option value="FirstName">Křestní jméno</option>
+        <option value="LastName">Příjmení</option>
+        <option value="City">Město</option>
+    </select>
+    <button type="submit">Potvrdit</button>
+</form>
+
+<a href="@Url.Action("Create")" class="create-button">Přidat kontakt</a>
+
+<table class="contact-table">
+    <thead>
+        <tr>
+            <th>Křestní</th>
+            <th>Příjmení</th>
+            <th>Telefon</th>
+            <th>Email</th>
+            <th>Město</th>
+            <th>Úkony</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contact in Model)
+        {
+            <tr>
+                <td>@contact.FirstName</td>
+                <td>@contact.LastName</td>
+                <td>@contact.Phone</td>
+                <td>@contact.Email</td>
+                <td>@contact.City</td>
+                <td>
+                    <a href="@Url.Action("Details", new { id = contact.Id })">Zobrazit</a> |
+                    <a href="@Url.Action("Edit", new { id = contact.Id })">Upravit</a> |
+                    <a href="@Url.Action("Delete", new { id = contact.Id })">Vymazat</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

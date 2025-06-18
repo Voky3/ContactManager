@@ -1,0 +1,19 @@
+﻿@using ContactManager.DTOs
+@model ContactResponse
+@{
+    ViewData["Title"] = "Contact Details";
+}
+
+<h2>Detail kontaktu</h2>
+
+<div class="details-container">
+    <p><strong>Křestní jméno:</strong> @Model.FirstName</p>
+    <p><strong>Příjmení:</strong> @Model.LastName</p>
+    <p><strong>Telefon:</strong> @Model.Phone</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Město:</strong> @Model.City</p>
+</div>
+
+<a href="@Url.Action("Edit", new { id = Model.Id })">Upravit</a> |
+<a href="@Url.Action("Delete", new { id = Model.Id })">Smazat</a> |
+<a href="@Url.Action("Index")">Zpátky na přehled</a>

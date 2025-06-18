@@ -1,0 +1,59 @@
+﻿@using ContactManager.DTOs
+@model ContactRequest
+@{
+    ViewData["Title"] = "Vytvořit Kontakt";
+}
+
+<h2>Vytvořit kontakt</h2>
+
+<form asp-action="Create" method="post" autocomplete="off">
+    <table>
+        <tr>
+            <th>Pole</th>
+            <th>Hodnota</th>
+        </tr>
+
+        <tr>
+            <td><label asp-for="FirstName">Křestní jméno:</label></td>
+            <td>
+                <input asp-for="FirstName" />
+                <span asp-validation-for="FirstName"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label asp-for="LastName">Příjmení:</label></td>
+            <td>
+                <input asp-for="LastName" />
+                <span asp-validation-for="LastName"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label asp-for="Phone">Telefon:</label></td>
+            <td>
+                <input asp-for="Phone" />
+                <span asp-validation-for="Phone"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label asp-for="Email">Email:</label></td>
+            <td>
+                <input asp-for="Email" />
+                <span asp-validation-for="Email"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label asp-for="City">Město:</label></td>
+            <td>
+                <input asp-for="City" />
+                <span asp-validation-for="City"></span>
+            </td>
+        </tr>
+    </table>    
+
+    <button type="submit">Vytvořit</button>
+    <a asp-action="Index" class="cancel-link">Storno</a>
+</form>

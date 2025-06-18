@@ -16,9 +16,11 @@ namespace ContactManager.Services
             await _contactRepository.CreateAsync(contact);
         }        
 
-        public Task<IEnumerable<ContactResponse>> GetAllAsync(string? filter, string? sortBy)
+        public async Task<IEnumerable<ContactResponse>> GetAllAsync(string? filter, string? sortBy)
         {
-            throw new NotImplementedException();
+            var contacts = await _contactRepository.GetAllAsync(filter, sortBy);
+
+            return contacts.Select(MapToResponse).ToList();
         }
 
         public async Task<ContactResponse?> GetByIdAsync(int id)

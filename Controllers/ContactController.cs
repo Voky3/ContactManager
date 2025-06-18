@@ -10,15 +10,15 @@ namespace ContactManager.Controllers
 
         public ContactController(IContactService service) => _service = service;
 
-        // ------------------ LIST ALL ------------------
+        // LIST ALL
 
         public async Task<IActionResult> Index(string? filter, string? sortBy)
         {
             var contacts = await _service.GetAllAsync(filter, sortBy);
-            return View(contacts); // returns Views/Contact/Index.cshtml
+            return View(contacts); // Views/Contact/Index.cshtml
         }
 
-        // ------------------ DETAILS ------------------
+        // DETAILS
 
         public async Task<IActionResult> Details(int id)
         {
@@ -28,7 +28,7 @@ namespace ContactManager.Controllers
             return View(contact); // Views/Contact/Details.cshtml
         }
 
-        // ------------------ CREATE ------------------
+        // CREATE
 
         public IActionResult Create()
         {
@@ -45,15 +45,17 @@ namespace ContactManager.Controllers
             return RedirectToAction("Index");
         }
 
-        // ------------------ EDIT ------------------
+        // EDIT
 
         public async Task<IActionResult> Edit(int id)
         {
             var contact = await _service.GetByIdAsync(id);
             if (contact == null) return NotFound();
 
+            ViewBag.Current = contact;
+
             var request = MapToRequest(contact);
-            return View(request); // pass filled form
+            return View(request);
         }
 
         [HttpPost]
@@ -66,7 +68,7 @@ namespace ContactManager.Controllers
             return success ? RedirectToAction("Index") : NotFound();
         }
 
-        // ------------------ DELETE ------------------
+        // DELETE
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -90,6 +92,5 @@ namespace ContactManager.Controllers
             Email = response.Email,
             City = response.City
         };
-
     }
 }

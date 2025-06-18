@@ -1,0 +1,24 @@
+﻿@using ContactManager.DTOs
+@model ContactResponse
+@{
+    ViewData["Title"] = "Odtsranit kontakt";
+}
+
+<h2>Smazat kontakt</h2>
+
+<p>Opravdu chcete smazat kontakt?</p>
+
+<div class="details-container">
+    <p><strong>Křestní jméno:</strong> @Model.FirstName</p>
+    <p><strong>Příjmení:</strong> @Model.LastName</p>
+    <p><strong>Telefon:</strong> @Model.Phone</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Město:</strong> @Model.City</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit">Ano, smazat</button>
+    <a href="@Url.Action("Index")" class="cancel-link">Storno</a>
+</form>
+    

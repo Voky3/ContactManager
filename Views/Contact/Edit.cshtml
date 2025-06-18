@@ -1,0 +1,69 @@
+﻿@using ContactManager.DTOs
+@model ContactRequest
+@{
+    // Use ViewBag.Current to access current values
+    var current = (ContactResponse)ViewBag.Current;
+    ViewData["Title"] = "Upravit kontakt";
+}
+
+<h2>Upravit kontakt</h2>
+
+<form asp-action="Edit" method="post" autocomplete="off">
+    <input type="hidden" name="id" value="@Context.Request.RouteValues["id"]" />
+
+    <table>
+        <tr>
+            <th>Pole</th>
+            <th>Aktuální hodnota</th>
+            <th>Nová hodnota</th>
+        </tr>
+
+        <tr>
+            <td><label asp-for="FirstName">Křestní jméno:</label></td>
+            <td>@current.FirstName</td>
+            <td>
+                <input asp-for="FirstName" />
+                <span asp-validation-for="FirstName"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label asp-for="LastName">Příjmení:</label></td>
+            <td>@current.LastName</td>
+            <td>
+                <input asp-for="LastName" />
+                <span asp-validation-for="LastName"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label asp-for="Phone">Telefon:</label></td>
+            <td>@current.Phone</td>
+            <td>
+                <input asp-for="Phone" />
+                <span asp-validation-for="Phone"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label asp-for="Email">Email:</label></td>
+            <td>@current.Email</td>
+            <td>
+                <input asp-for="Email" />
+                <span asp-validation-for="Email"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label asp-for="City">Město:</label></td>
+            <td>@current.City</td>
+            <td>
+                <input asp-for="City" />
+                <span asp-validation-for="City"></span>
+            </td>
+        </tr>
+    </table>
+
+    <button type="submit">Uložit</button>
+    <a asp-action="Index" class="cancel-link">Storno</a>
+</form>

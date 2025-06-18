@@ -11,37 +11,34 @@ namespace ContactManager
 
             SQLitePCL.Batteries.Init(); // required for SQLite
 
-            // Add services to the container.
-            builder.Services.AddControllers();
+            // Add MVC services (with views)
+            builder.Services.AddControllersWithViews();
 
+            // Dependency injection
             builder.Services.AddScoped<IContactRepository, ContactRepository>();
             builder.Services.AddScoped<IContactService, ContactService>();
 
-            // Enable Swagger UI
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
             var app = builder.Build();
 
-            // Swagger for local testing
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            // seed testing data if DB is empty
+            // Seed testing data if DB is empty
             using (var scope = app.Services.CreateScope())
             {
                 var seeder = new TestingDataSeeder(
                     scope.ServiceProvider.GetRequiredService<IConfiguration>());
 
-                await seeder.EnsureDatabaseSeededAsync(); 
+                await seeder.EnsureDatabaseSeededAsync();
             }
 
-            app.UseHttpsRedirection();
+            app.UseStaticFiles(); // Enables serving wwwroot
+            app.UseHttpsRedirection();           
+
             app.UseRouting();
-            app.MapControllers();
+
+            app.UseAuthorization(); // optional, in case you add auth later
+
+            app.MapControllerRoute(
+                name: "default",
+                pattern: "{controller=Contact}/{action=Index}/{id?}");
 
             app.Run();
         }

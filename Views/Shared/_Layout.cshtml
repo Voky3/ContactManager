@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - Contact Manager</title>
+    <link rel="stylesheet" href="@Url.Content("~/css/styles.css")" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <h1>Contact Manager</h1>
+        <nav>
+            <a href="@Url.Action("Index", "Contact")">Domov</a>
+        </nav>
+    </header>
+
+    <main>
+        @RenderBody()
+    </main>
+
+    @RenderSection("Scripts", required: false)
+    <script src="/js/contact.js"></script>
+</body>
+</html>
+
